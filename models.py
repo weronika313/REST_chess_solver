@@ -226,7 +226,7 @@ class Pawn(Figure):
             return False
 
     def is_in_the_start_position(self):
-        if self.currentField[2] == "2":
+        if self.currentField[1] == "2":
             return True
         else:
             return False
