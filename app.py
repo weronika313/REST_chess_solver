@@ -1,18 +1,22 @@
 #!flask/bin/python
 from typing import List
 
-from flask import Flask, jsonify, Response
+from flask import Flask, jsonify
 import models
 from figures_switcher import FiguresSwitcher
 from figure_enum import FigureEnum
 
 app = Flask(__name__)
 
+
 @app.errorhandler(500)
 def internal_server_error(e):
-    return jsonify({'error': "Internal Server Error)"}), 500
+    return jsonify({"error": "Internal Server Error)"}), 500
 
-@app.route('/api/v1/<string:chess_figure>/<string:current_field>', methods=['GET'])
+
+@app.route(
+    "/api/v1/<string:chess_figure>/<string:current_field>", methods=["GET"]
+)
 def get_available_moves(chess_figure: str, current_field: str):
     error = None  # type: str
     available_moves: List[str] = []
@@ -25,7 +29,9 @@ def get_available_moves(chess_figure: str, current_field: str):
         if chess_figure.lower() == "pawn" and current_field[1] == "1":
             error = "Figure cant be in that field"
         else:
-            figure = get_figure_by_name(chess_figure, current_field)  # type: models.Figure
+            figure = get_figure_by_name(
+                chess_figure, current_field
+            )  # type: models.Figure
             available_moves = available_moves + figure.list_available_moves()
             if not available_moves:
                 error = "Figure doesnt have available moves"
@@ -38,14 +44,26 @@ def get_available_moves(chess_figure: str, current_field: str):
         error = "Field does not exist"
         response_code = 409
 
-    return jsonify({'availableMoves': available_moves,
-        'error': error,
-        'figure': chess_figure,
-        'current_field': current_field}), response_code
+    return (
+        jsonify(
+            {
+                "availableMoves": available_moves,
+                "error": error,
+                "figure": chess_figure,
+                "current_field": current_field,
+            }
+        ),
+        response_code,
+    )
 
 
-@app.route('/api/v1/<string:chess_figure>/<string:current_field>/<string:dest_field>', methods=['GET'])
-def get_move_validation(chess_figure: str, current_field: str, dest_field: str):
+@app.route(
+    "/api/v1/<string:chess_figure>/<string:current_field>/<string:dest_field>",
+    methods=["GET"],
+)
+def get_move_validation(
+    chess_figure: str, current_field: str, dest_field: str
+):
 
     error = None  # type: str
     response_code = 500  # type: int
@@ -63,8 +81,14 @@ def get_move_validation(chess_figure: str, current_field: str, dest_field: str):
         error = "Destination field does not exist"
         response_code = 409
 
-    elif validate_figure_name(chess_figure) and validate_field(current_field) and validate_field(dest_field):
-        figure = get_figure_by_name(chess_figure, current_field)  # type: models.Figure
+    elif (
+        validate_figure_name(chess_figure)
+        and validate_field(current_field)
+        and validate_field(dest_field)
+    ):
+        figure = get_figure_by_name(
+            chess_figure, current_field
+        )  # type: models.Figure
         response_code = 200
 
         if current_field.upper() == dest_field.upper():
@@ -76,11 +100,18 @@ def get_move_validation(chess_figure: str, current_field: str, dest_field: str):
         else:
             error = "Current move is not permitted."
 
-    return jsonify({'move': move_validation,
-        'figure': chess_figure,
-        'error': error,
-        'current_field': current_field,
-        'destField': dest_field}), response_code
+    return (
+        jsonify(
+            {
+                "move": move_validation,
+                "figure": chess_figure,
+                "error": error,
+                "current_field": current_field,
+                "destField": dest_field,
+            }
+        ),
+        response_code,
+    )
 
 
 def get_figure_by_name(figure_name: str, current_field: str) -> models.Figure:
@@ -121,5 +152,5 @@ def validate_figure_name(figure_name: str) -> bool:
         return False
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True, port=5500)

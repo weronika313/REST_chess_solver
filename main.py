@@ -7,22 +7,6 @@ from typing import List
 from models import Rook
 
 
-class Switcher(object):
-    def indirect(self, i):
-        method_name = 'number_' + i
-        method = getattr(self, method_name, lambda: 'Invalid')
-        return method()
-
-    def number_0(self):
-        return 'zero'
-
-    def number_1(self):
-        return 'one'
-
-    def number_2(self):
-        return 'two'
-
-
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.

@@ -3,8 +3,8 @@ import models
 
 class FiguresSwitcher(object):
     def indirect(self, figure_name: str, current_field: str):
-        method_name = 'get_' + figure_name  # type: str
-        method = getattr(self, method_name, lambda: 'Invalid')
+        method_name = "get_" + figure_name  # type: str
+        method = getattr(self, method_name, lambda: "Invalid")
         return method(current_field)
 
     def get_rook(self, current_field: str) -> models.Rook:

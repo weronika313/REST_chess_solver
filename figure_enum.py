@@ -10,5 +10,5 @@ class FigureEnum(Enum):
     PAWN = "pawn"
 
     @classmethod
-    def has_value(cls, value):
+    def has_value(cls, value: str) -> str:
         return value in cls._value2member_map_
