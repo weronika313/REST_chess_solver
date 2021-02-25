@@ -20,8 +20,8 @@ Start flask server
 #### TO GET AVAILABLE MOVES LIST:
     [GET] /api/v1/{chess-figure}/{current-field}
 
-#####EXAMPLE:
-######REQUEST
+EXAMPLE:
+REQUEST
     curl http://127.0.0.1:5000/api/v1/rook/h2
 
 ######RESPONSE
@@ -36,11 +36,11 @@ Start flask server
 #### TO CHECK MOVE:
     [GET] /api/v1/{chess-figure}/{current-field}/{dest-field}
 
-#####EXAMPLE:
-######REQUEST
+EXAMPLE:
+REQUEST
     curl http://127.0.0.1:5000/api/v1/rook/h2/h5
 
-######RESPONSE
+RESPONSE
 ```json
 {
     "current_field":"h2",
