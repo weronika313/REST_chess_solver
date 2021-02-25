@@ -1,3 +1,4 @@
+#!flask/bin/python
 from typing import List
 
 
@@ -27,12 +28,12 @@ class King(Figure):
                 if not (column == 0 and row == 0):
 
                     neighbour_square_column = (
-                        current_column + column
+                            current_column + column
                     )  # type: int
                     neighbour_square_row = current_row + row  # type: int
 
                     if square_is_legal(
-                        neighbour_square_column, neighbour_square_row
+                            neighbour_square_column, neighbour_square_row
                     ):
                         list_of_available_moves.append(
                             get_square_index(
@@ -52,9 +53,9 @@ class King(Figure):
         rows_difference = current_row - destination_row  # type: int
 
         if (
-            abs(columns_difference) <= 1
-            and abs(rows_difference) <= 1
-            and square_is_legal(destination_column, destination_row)
+                abs(columns_difference) <= 1
+                and abs(rows_difference) <= 1
+                and square_is_legal(destination_column, destination_row)
         ):
             return True
         else:
@@ -80,7 +81,7 @@ class Rook(Figure):
         destination_row = int(dest_field[1])  # type: int
 
         if validate_vertical_and_horizontal_move(
-            current_row, current_column, destination_row, destination_column
+                current_row, current_column, destination_row, destination_column
         ):
             return True
         else:
@@ -92,10 +93,10 @@ class Bishop(Figure):
         current_column = get_column_number(self.currentField)  # type: int
         current_row = int(self.currentField[1])  # type: int
         list_of_available_moves = (
-            get_right_down_diagonal_moves(current_row, current_column)
-            + get_right_up_diagonal_moves(current_row, current_column)
-            + get_left_up_diagonal_moves(current_row, current_column)
-            + get_left_down_diagonal_moves(current_row, current_column)
+                get_right_down_diagonal_moves(current_row, current_column)
+                + get_right_up_diagonal_moves(current_row, current_column)
+                + get_left_up_diagonal_moves(current_row, current_column)
+                + get_left_down_diagonal_moves(current_row, current_column)
         )  # type: List[str]
 
         return list_of_available_moves
@@ -119,12 +120,12 @@ class Queen(Figure):
         current_column = get_column_number(self.currentField)  # type: int
         current_row = int(self.currentField[1])  # type: int
         list_of_available_moves = (
-            get_right_down_diagonal_moves(current_row, current_column)
-            + get_right_up_diagonal_moves(current_row, current_column)
-            + get_left_up_diagonal_moves(current_row, current_column)
-            + get_left_down_diagonal_moves(current_row, current_column)
-            + get_vertical_moves(current_row, current_column)
-            + get_horizontal_moves(current_row, current_column)
+                get_right_down_diagonal_moves(current_row, current_column)
+                + get_right_up_diagonal_moves(current_row, current_column)
+                + get_left_up_diagonal_moves(current_row, current_column)
+                + get_left_down_diagonal_moves(current_row, current_column)
+                + get_vertical_moves(current_row, current_column)
+                + get_horizontal_moves(current_row, current_column)
         )  # type: List[str]
 
         return list_of_available_moves
@@ -138,7 +139,7 @@ class Queen(Figure):
         rows_difference = current_row - destination_row  # type: int
 
         if validate_vertical_and_horizontal_move(
-            current_row, current_column, destination_row, destination_column
+                current_row, current_column, destination_row, destination_column
         ) or validate_diagonal_move(rows_difference, columns_difference):
             return True
         else:
@@ -164,11 +165,11 @@ class Knight(Figure):
         move_row: int
         for move_column, move_row in moves:
             destination_square_column = (
-                current_column + move_column
+                    current_column + move_column
             )  # type: int
             destination_square_row = current_row + move_row
             if square_is_legal(
-                destination_square_column, destination_square_row
+                    destination_square_column, destination_square_row
             ):
                 list_of_available_moves.append(
                     get_square_index(
@@ -187,7 +188,7 @@ class Knight(Figure):
         rows_difference = current_row - destination_row  # type: int
 
         if (abs(columns_difference) == 1 and abs(rows_difference) == 2) or (
-            abs(columns_difference) == 2 and abs(rows_difference) == 1
+                abs(columns_difference) == 2 and abs(rows_difference) == 1
         ):
             return True
         else:
@@ -199,10 +200,10 @@ class Pawn(Figure):
         list_of_available_moves: List[str] = []
         current_column = get_column_number(self.currentField)  # type: int
         current_row = int(self.currentField[1])  # type: int
-
-        list_of_available_moves.append(
-            get_square_index(current_column, current_row + 1)
-        )
+        if square_is_legal(current_column, current_row+1):
+            list_of_available_moves.append(
+                get_square_index(current_column, current_row + 1)
+            )
         if self.is_in_the_start_position():
             list_of_available_moves.append(
                 get_square_index(current_column, current_row + 2)
@@ -215,11 +216,11 @@ class Pawn(Figure):
         current_row = int(self.currentField[1])  # type: int
         destination_column = get_column_number(dest_field)  # type: int
         destination_row = int(dest_field[1])  # type: int
-        rows_difference = current_row - destination_row  # type: int
+        rows_difference = destination_row - current_row  # type: int
 
-        if current_column == destination_column and (
-            rows_difference == 1
-            or (rows_difference == 2 and self.is_in_the_start_position())
+        if square_is_legal(destination_column, destination_row) and current_column == destination_column and (
+                rows_difference == 1
+                or (rows_difference == 2 and self.is_in_the_start_position())
         ):
             return True
         else:
@@ -239,7 +240,7 @@ def get_column_number(current_field: str) -> int:
 
 
 def get_horizontal_moves(
-    current_row_number: int, current_column_number: int
+        current_row_number: int, current_column_number: int
 ) -> List[str]:
     list_of_available_moves: List[str] = []
     search_depth_min = 1  # type: int
@@ -256,7 +257,7 @@ def get_horizontal_moves(
 
 
 def get_vertical_moves(
-    current_row_number: int, current_column_number: int
+        current_row_number: int, current_column_number: int
 ) -> List[str]:
     list_of_available_moves: List[str] = []
     search_depth_min = 1  # type: int
@@ -273,10 +274,10 @@ def get_vertical_moves(
 
 
 def validate_vertical_and_horizontal_move(
-    current_row: int, current_column: int, dest_row: int, dest_column: int
+        current_row: int, current_column: int, dest_row: int, dest_column: int
 ):
     if (
-        current_row == dest_row or current_column == dest_column
+            current_row == dest_row or current_column == dest_column
     ) and square_is_legal(dest_column, dest_row):
         return True
     else:
@@ -291,7 +292,7 @@ def validate_diagonal_move(rows_difference: int, columns_difference: int):
 
 
 def get_right_down_diagonal_moves(
-    current_row_number: int, current_column_number: int
+        current_row_number: int, current_column_number: int
 ) -> List[str]:
     list_of_available_moves: List[str] = []
     column = current_column_number  # type: int
@@ -309,7 +310,7 @@ def get_right_down_diagonal_moves(
 
 
 def get_right_up_diagonal_moves(
-    current_row_number: int, current_column_number: int
+        current_row_number: int, current_column_number: int
 ) -> List[str]:
     list_of_available_moves: List[str] = []
     column = current_column_number  # type: int
@@ -327,7 +328,7 @@ def get_right_up_diagonal_moves(
 
 
 def get_left_down_diagonal_moves(
-    current_row_number: int, current_column_number: int
+        current_row_number: int, current_column_number: int
 ) -> List[str]:
     list_of_available_moves: List[str] = []
     column = current_column_number  # type: int
@@ -345,7 +346,7 @@ def get_left_down_diagonal_moves(
 
 
 def get_left_up_diagonal_moves(
-    current_row_number: int, current_column_number: int
+        current_row_number: int, current_column_number: int
 ) -> List[str]:
     list_of_available_moves: List[str] = []
     column = current_column_number  # type: int
