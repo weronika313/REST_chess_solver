@@ -1,4 +1,3 @@
-#!flask/bin/python
 from typing import List
 
 

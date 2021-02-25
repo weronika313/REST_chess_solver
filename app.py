@@ -1,4 +1,3 @@
-#!flask/bin/python
 from typing import List
 
 from flask import Flask, jsonify
