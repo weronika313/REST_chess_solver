@@ -21,10 +21,12 @@ Start flask server
     [GET] /api/v1/{chess-figure}/{current-field}
 
 EXAMPLE:
-REQUEST
-    curl http://127.0.0.1:5000/api/v1/rook/h2
 
-######RESPONSE
+    REQUEST
+
+        curl http://127.0.0.1:5000/api/v1/rook/h2
+
+    RESPONSE
 ```json
 {
     "availableMoves":["H1","H3","H4","H5","H6","H7","H8","A2","B2","C2","D2","E2","F2","G2"],
@@ -37,10 +39,11 @@ REQUEST
     [GET] /api/v1/{chess-figure}/{current-field}/{dest-field}
 
 EXAMPLE:
-REQUEST
-    curl http://127.0.0.1:5000/api/v1/rook/h2/h5
 
-RESPONSE
+    REQUEST
+        curl http://127.0.0.1:5000/api/v1/rook/h2/h5
+
+    RESPONSE
 ```json
 {
     "current_field":"h2",
